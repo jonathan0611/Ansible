@@ -1,0 +1,25 @@
+---
+- hosts: server
+  become: true
+  remote_user: root
+
+  tasks:
+   - name: atualizando repostorio
+     apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+
+   - name: Instalando Docker
+     apt: name={{ item }} state=latest update_cache=yes
+     loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'gnupg', 'lsb-release' ] 
+
+   - name: Adicionando a chave GPG 
+     apt_key: 
+       url: https://download.docker.com/linux/debian/gpg
+       state: present
+
+   - name: adicionando repostorio
+     apt_repository:
+       repo: deb https://download.docker.com/linux/debian
+       state: present
+
+   - name:
+     apt: update_cache=yes name=docker-ce state=latest
