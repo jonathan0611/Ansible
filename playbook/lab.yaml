@@ -4,12 +4,12 @@
   remote_user: root
 
   tasks:
-   - name: atualizando repostorio
+   - name: instalando a o aptitude
      apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
 
    - name: Instalando Docker
      apt: name={{ item }} state=latest update_cache=yes
-     loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'gnupg', 'lsb-release' ] 
+     loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'gnupg', 'lsb-release', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools'] 
 
    - name: Adicionando a chave GPG 
      apt_key: 
@@ -21,5 +21,5 @@
        repo: deb https://download.docker.com/linux/debian
        state: present
 
-   - name:
+   - name: atualizando e instalando o docker.
      apt: update_cache=yes name=docker-ce state=latest
